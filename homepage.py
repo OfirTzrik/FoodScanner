@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import streamlit as st
 import pandas as pd 
 import matplotlib.pyplot as plt 
@@ -50,3 +51,45 @@ if st.session_state["items"]:
             st.success(f"Deleted: {item['name']}")
             st.rerun()  # refresh UI after deletion
 
+=======
+import streamlit as st
+import pandas as pd 
+import matplotlib.pyplot as plt 
+
+st.title("Food Scanner")
+
+if "items" not in st.session_state:
+    st.session_state.items = []
+
+# input filds
+IngredientName = st.text_input("Enter item name:")
+Ingredient_amount = st.number_input("Enter the amount of the ingredient:", step=1, value=1)
+
+# a button the add the ingredient
+if st.button("Add to list"):
+    if IngredientName.strip():
+        found = False
+        for item in st.session_state["items"]:
+            if item["name"].lower() == IngredientName.strip().lower():
+                item["amount"] += Ingredient_amount
+                found = True
+                break
+        
+        if not found:
+            st.session_state["items"].append({
+                "name": IngredientName.strip(),
+                "amount": Ingredient_amount
+            })
+        
+        st.success(f"Added: {IngredientName}")
+
+
+# removing an item from the list
+if st.session_state["items"]:
+    delet_ingredient = st.selectbox("select item to delete", st.session_state["items"])
+    if st.button("Delete item"):
+        st.session_state["items"].remove(delet_ingredient)
+        st.success(f"Deleted: {delet_ingredient}")
+
+st.write("the list", st.session_state["items"])        
+>>>>>>> b5a9766 (Add homepage.py)

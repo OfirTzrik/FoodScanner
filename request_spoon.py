@@ -31,5 +31,4 @@ def requestRecipeSteps(ingredients: list, number_of_recipes: int):
             return None
         recipes_steps.append(steps)
 
-    # Return (recipe, the recipe's steps) for each recipe
     return zip(recipes, recipes_steps)

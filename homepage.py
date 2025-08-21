@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import request_spoon as rs
 
 st.title("Food Scanner")
 
@@ -30,7 +31,7 @@ if st.button("Add to list"):
 # options to increase or decrease or delete the amount of each ingredient
 
 if st.session_state["items"]:
-    st.subheader("the ingredients:")
+    st.subheader("List of ingredients:")
     for item in st.session_state["items"]:
         col1, increase, decrease, delete = st.columns([2,1,1,1])
         col1.write(f"{item['name']}: {item['amount']}")
@@ -49,3 +50,13 @@ if st.session_state["items"]:
             st.success(f"Deleted: {item['name']}")
             st.rerun()  # refresh UI after deletion
 
+# Request recipes as long as at least one ingredient was entered
+if st.button("Get recipes") and len(st.session_state["items"]) > 1:
+    # Currently does not take amount into account
+    items_as_list = [item["name"] for item in st.session_state["items"]]
+    recipes = rs.requestRecipeSteps(items_as_list, 2); # For now request 2 recipes due to spoonacular API tier limits
+    info_col, steps_col = st.columns(2)
+    # Print each recipe with info on the left and steps on the right
+    for info, steps in recipes:
+        info_col.write(info)
+        steps_col.write(steps)

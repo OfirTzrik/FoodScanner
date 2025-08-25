@@ -55,7 +55,35 @@ if st.button("Get recipes") and len(st.session_state["items"]) > 1:
     # Currently does not take amount into account
     items_as_list = [item["name"] for item in st.session_state["items"]]
     recipes = rs.requestRecipeSteps(items_as_list, 2); # For now request 2 recipes due to spoonacular API tier limits
-    info_col, steps_col = st.columns(2)
+    for info, steps in recipes:
+        info_col, steps_col = st.columns(2)
+
+    # left side column
+    with info_col:
+        st.subheader(info.get("title", "No title"))
+        st.image(info.get("image", ""), use_column_width=True)
+        st.markdown("📝 Ingredients")
+
+        if "missedIngredients" in info:
+                for ing in info["missedIngredients"]:
+                    col1, col2 = st.columns([1,4])
+                    with col1:
+                        if "image" in ing:
+                            st.image(ing["image"], width=40)
+                    with col2:
+                        st.write(f"**{ing['original']}**")
+    
+    # right side column
+    with steps_col:
+        st.markdown("👩‍🍳 Instructions")
+        if steps and isinstance(steps, list) and len(steps) > 0:
+            for step in steps[0]["steps"]:
+                st.markdown(f"{step['number']}. {step['step']}")
+        else:
+            st.write("No instructions available.")
+
+
+    
     # Print each recipe with info on the left and steps on the right
     for info, steps in recipes:
         info_col.write(info)

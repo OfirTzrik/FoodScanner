@@ -59,32 +59,22 @@ if st.button("Get recipes") and len(st.session_state["items"]) > 1:
         info_col, steps_col = st.columns(2)
 
         # left side column
-        with info_col:
-            st.subheader(info.get("title", "No title"))
-            st.image(info.get("image", ""), use_column_width=True)
-            st.markdown("📝 Ingredients")
+        info_col.subheader(info.get("title", "No title"))
+        info_col.image(info.get("image", ""), use_column_width=True)
+        info_col.markdown("📝 Ingredients")
 
-            if "missedIngredients" in info:
-                    for ing in info["missedIngredients"]:
-                        col1, col2 = st.columns([1,4])
-                        with col1:
-                            if "image" in ing:
-                                st.image(ing["image"], width=40)
-                        with col2:
-                            st.write(f"**{ing['original']}**")
+        if "missedIngredients" in info:
+            for ing in info["missedIngredients"]:
+                col1, col2 = st.columns([1,4])
+                if "image" in ing:
+                    col1.image(ing["image"], width=40)
+                col2.write(f"**{ing['original']}**")
         
         # right side column
-        with steps_col:
-            st.markdown("👩‍🍳 Instructions")
-            if steps and isinstance(steps, list) and len(steps) > 0:
-                for step in steps[0]["steps"]:
-                    st.markdown(f"{step['number']}. {step['step']}")
+        steps_col.markdown("👩‍🍳 Instructions")
+        if steps and isinstance(steps, list) and len(steps) > 0:
+            for step in steps[0]["steps"]:
+                steps_col.markdown(f"{step['number']}. {step['step']}")
             else:
-                st.write("No instructions available.")
+                steps_col.write("No instructions available.")
 
-
-        
-        # Print each recipe with info on the left and steps on the right
-        for info, steps in recipes:
-            info_col.write(info)
-            steps_col.write(steps)

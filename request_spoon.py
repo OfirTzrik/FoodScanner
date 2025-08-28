@@ -58,9 +58,12 @@ def requestRecipeByNutrients(min_carbs: int = 0, max_carbs: int = 500, min_prote
     return zip(recipes, recipes_steps)
 
 def requestRecipeInformation(recipe_id: int):
+    """
+    Get full information about a given recipe
+    Used for getting a full list of ingredients when searching by nutrients
+    """
     url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
     try:
-        recipe_info = requests.get(url, params={"apiKey": st.secrets["API_KEY"]}).json()
-        return recipe_info
+        return requests.get(url, params={"apiKey": st.secrets["API_KEY"]}).json()
     except Exception:
         return None

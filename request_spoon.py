@@ -74,3 +74,12 @@ def requestRecipeByNutrients(min_carbs: int = 0, max_carbs: int = 500,
         recipes_steps.append(steps)
 
     return zip(recipes, recipes_steps)
+
+def requestRecipeInformation(recipe_id: int):
+
+    url = f"https://api.spoonacular.com/recipes/{recipe_id}/information"
+    try:
+        recipe_info = requests.get(url, params={"apiKey": st.secrets["API_KEY"]}).json()
+        return recipe_info
+    except Exception:
+        return None

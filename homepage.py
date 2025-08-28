@@ -114,6 +114,25 @@ elif search_options == "by nutrients":
         
     
             for info, steps in recipes:
+<<<<<<< HEAD
+                full_info = rs.requestRecipeInformation(info["id"])
+                info_col, steps_col = st.columns(2)
+                 # Left side (recipe info + nutrients)
+                info_col.subheader(info.get("title", "No title"))
+                info_col.image(info.get("image", ""), use_container_width=True)
+
+                info_col.markdown("📝 Ingredients")
+                if full_info and "extendedIngredients" in full_info:
+                    for ing in full_info["extendedIngredients"]:
+                        col1, col2 = info_col.columns([1,4])
+                        if "image" in ing and ing["image"]:
+                            col1.image(f"https://spoonacular.com/cdn/ingredients_100x100/{ing['image']}", width=40)
+                        col2.write(f"**{ing['original']}**")
+                else:
+                    info_col.write("No ingredient details available.")
+
+    # Nutrition facts
+=======
                 info_col, steps_col = st.columns(2)
 
                  # Left side (recipe info + nutrients)
@@ -122,6 +141,7 @@ elif search_options == "by nutrients":
 
                 info_col.markdown("📝 Ingredients")
                 
+>>>>>>> 3eeee7d496b9d14a8246f3d4c7072e17cb4f77c5
 
                 # 🥗 Show nutrients
                 info_col.markdown("### Nutrition facts")

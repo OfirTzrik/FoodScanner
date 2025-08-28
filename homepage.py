@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import request_spoon as rs
 
-st.title("Food Scanner")
+st.header("Food Scanner", divider=True)
 
-search_options = st.selectbox("choose the searching mode:", ["by ingredients", "by nutrients"])
+search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
 # The option to search food by the ingredients
 
 if search_options == "by ingredients":
@@ -12,25 +12,25 @@ if search_options == "by ingredients":
         st.session_state.items = []
 
     # input fields
-    IngredientName = st.text_input("Enter item name:")
-    Ingredient_amount = st.number_input("Enter the amount of the ingredient:",min_value=1, step=1, value=1)
+    ingredient_name = st.text_input("Enter item name:")
+    ingredient_amount = st.number_input("Enter the amount of the ingredient:",min_value=1, step=1, value=1)
     # a button the add the ingredient
     if st.button("Add to list"):
-        if IngredientName.strip():
+        if ingredient_name.strip():
             found = False
             for item in st.session_state["items"]:
-                if item["name"].lower() == IngredientName.strip().lower():
-                    item["amount"] += Ingredient_amount
+                if item["name"].lower() == ingredient_name.strip().lower():
+                    item["amount"] += ingredient_amount
                     found = True
                     break
             
             if not found:
                 st.session_state["items"].append({
-                    "name": IngredientName.strip(),
-                    "amount": Ingredient_amount
+                    "name": ingredient_name.strip().capitalize(),
+                    "amount": ingredient_amount
                 })
             
-            st.success(f"Added: {IngredientName}")
+            st.success(f"Added: {ingredient_name}")
 
     # options to increase or decrease or delete the amount of each ingredient
 
@@ -55,17 +55,17 @@ if search_options == "by ingredients":
                 st.rerun()  # refresh UI after deletion
 
     # Request recipes as long as at least one ingredient was entered
-    if st.button("Get recipes") and len(st.session_state["items"]) > 1:
+    if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
         # Currently does not take amount into account
         items_as_list = [item["name"] for item in st.session_state["items"]]
-        recipes = rs.requestRecipeSteps(items_as_list, 2); # For now request 2 recipes due to spoonacular API tier limits
+        recipes = rs.requestRecipeByIngredients(items_as_list, 2); # For now request 2 recipes due to spoonacular API tier limits
         for info, steps in recipes:
             info_col, steps_col = st.columns(2)
 
             # left side column
             info_col.subheader(info.get("title", "No title"))
             info_col.image(info.get("image", ""), use_container_width=True)
-            info_col.markdown("📝 Ingredients")
+            info_col.markdown("📝 Missing ingredients")
 
             if "missedIngredients" in info:
                 for ing in info["missedIngredients"]:
@@ -79,31 +79,31 @@ if search_options == "by ingredients":
             if steps and isinstance(steps, list) and len(steps) > 0:
                 for step in steps[0]["steps"]:
                     steps_col.markdown(f"{step['number']}. {step['step']}")
-                else:
-                    steps_col.write("No instructions available.")
+            else:
+                steps_col.write("No instructions available.")
 
 # The option to search food by the nutrients
 
 elif search_options == "by nutrients":
-    st.subheader("set your nutrients values to filter:")
+    st.subheader("Set your nutrients values to filter:")
 
     min_nutr, max_nutr = st.columns(2)
     with min_nutr:
-        min_cal = st.number_input("Min Caloriea (g)", min_value=0, max_value=5000, value=0)
+        min_cal = st.number_input("Min Calories (g)", min_value=0, max_value=5000, value=0)
         min_protein = st.number_input("Min Protein (g)", min_value=0, max_value=200, value=0)
         min_carbs = st.number_input("Min Carbs (g)", min_value=0, max_value=500, value=0)
         min_fat = st.number_input("Min Fat (g)", min_value=0, max_value=500, value=0)
 
     with max_nutr:
-        max_cal = st.number_input("Max Calorie (g)", min_value=0, max_value=5000, value=5000)
+        max_cal = st.number_input("Max Calories (g)", min_value=0, max_value=5000, value=5000)
         max_protein = st.number_input("Max Protein (g)", min_value=0, max_value=200, value=100)
         max_carbs = st.number_input("Max Carbs (g)", min_value=0, max_value=500, value=100)
         max_fat = st.number_input("Max Fat (g)", min_value=0, max_value=150, value=50 )
 
     if(min_protein > max_protein or min_carbs > max_carbs or min_cal > max_cal or min_fat > max_fat):
-        st.error("the min nutrients must be smaller then the max nutrients")
+        st.error("Minimum nutrients must be less than maximum nutrients.")
     else:
-        if st.button("get recipe(nutrients)"):
+        if st.button("Get recipe(s)"):
             recipes = rs.requestRecipeByNutrients(
                 min_carbs=min_carbs, max_carbs=max_carbs,
                 min_protein=min_protein, max_protein=max_protein,
@@ -114,7 +114,6 @@ elif search_options == "by nutrients":
         
     
             for info, steps in recipes:
-<<<<<<< HEAD
                 full_info = rs.requestRecipeInformation(info["id"])
                 info_col, steps_col = st.columns(2)
                  # Left side (recipe info + nutrients)
@@ -132,16 +131,6 @@ elif search_options == "by nutrients":
                     info_col.write("No ingredient details available.")
 
     # Nutrition facts
-=======
-                info_col, steps_col = st.columns(2)
-
-                 # Left side (recipe info + nutrients)
-                info_col.subheader(info.get("title", "No title"))
-                info_col.image(info.get("image", ""), use_container_width=True)
-
-                info_col.markdown("📝 Ingredients")
-                
->>>>>>> 3eeee7d496b9d14a8246f3d4c7072e17cb4f77c5
 
                 # 🥗 Show nutrients
                 info_col.markdown("### Nutrition facts")

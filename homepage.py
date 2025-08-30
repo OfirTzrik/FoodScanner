@@ -84,31 +84,30 @@ def showByIngredients():
 def showByNutrients():
     st.subheader("Set your nutrients values to filter:")
 
-    min_nutr, max_nutr = st.columns(2)
-    with min_nutr:
-        min_cal = st.number_input("Min Calories (g)", min_value=0, max_value=5000, value=0)
-        min_protein = st.number_input("Min Protein (g)", min_value=0, max_value=200, value=0)
-        min_carbs = st.number_input("Min Carbs (g)", min_value=0, max_value=500, value=0)
-        min_fat = st.number_input("Min Fat (g)", min_value=0, max_value=500, value=0)
+    # DELETE AFTER API USAGE RESETS AND THE REPLACEMENT CODE IS CHECKED
+    # min_nutr, max_nutr = st.columns(2)
+    # with min_nutr:
+    #     min_cal = st.number_input("Min Calories (g)", min_value=0, max_value=5000, value=0)
+    #     min_protein = st.number_input("Min Protein (g)", min_value=0, max_value=200, value=0)
+    #     min_carbs = st.number_input("Min Carbs (g)", min_value=0, max_value=500, value=0)
+    #     min_fat = st.number_input("Min Fat (g)", min_value=0, max_value=500, value=0)
 
-    with max_nutr:
-        max_cal = st.number_input("Max Calories (g)", min_value=0, max_value=5000, value=5000)
-        max_protein = st.number_input("Max Protein (g)", min_value=0, max_value=200, value=100)
-        max_carbs = st.number_input("Max Carbs (g)", min_value=0, max_value=500, value=100)
-        max_fat = st.number_input("Max Fat (g)", min_value=0, max_value=150, value=50 )
+    # with max_nutr:
+    #     max_cal = st.number_input("Max Calories (g)", min_value=0, max_value=5000, value=5000)
+    #     max_protein = st.number_input("Max Protein (g)", min_value=0, max_value=200, value=100)
+    #     max_carbs = st.number_input("Max Carbs (g)", min_value=0, max_value=500, value=100)
+    #     max_fat = st.number_input("Max Fat (g)", min_value=0, max_value=150, value=50 )
+    
+    min_cal, max_cal = st.slider("Min to max calories", 0, 5000, (500, 4500), 50)
+    min_protein, max_protein = st.slider("Min to max protiens", 0, 200, (50, 150), 5)
+    min_carbs, max_carbs = st.slider("Min to max carbs", 0, 500, (50, 450), 5)
+    min_fat, max_fat = st.slider("Min to max fats", 0, 500, (50, 450), 5)
 
-    if(min_protein > max_protein or min_carbs > max_carbs or min_cal > max_cal or min_fat > max_fat):
+    if min_protein > max_protein or min_carbs > max_carbs or min_cal > max_cal or min_fat > max_fat:
         st.error("Minimum nutrients must be less than maximum nutrients.")
     else:
         if st.button("Get recipe(s)"):
-            recipes = rs.requestRecipeByNutrients(
-                min_carbs=min_carbs, max_carbs=max_carbs,
-                min_protein=min_protein, max_protein=max_protein,
-                min_calories=min_cal, max_calories=max_cal,
-                min_fat=min_fat, max_fat=max_fat,
-                number_of_recipes=2
-            )
-        
+            recipes = rs.requestRecipeByNutrients(min_carbs=min_carbs, max_carbs=max_carbs, min_protein=min_protein, max_protein=max_protein, min_calories=min_cal, max_calories=max_cal, min_fat=min_fat, max_fat=max_fat, number_of_recipes=2)
     
             for info, steps in recipes:
                 full_info = rs.requestRecipeInformation(info["id"])
@@ -127,9 +126,7 @@ def showByNutrients():
                 else:
                     info_col.write("No ingredient details available.")
 
-    # Nutrition facts
-
-                # 🥗 Show nutrients
+                # Show nutrient facts
                 info_col.markdown("### Nutrition facts")
                 info_col.write(f"Calories: {info.get('calories', 'N/A')}")
                 info_col.write(f"Protein: {info.get('protein', 'N/A')}")

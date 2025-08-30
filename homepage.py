@@ -7,7 +7,7 @@ st.header("Food Scanner", divider=True)
 search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
 # The option to search food by the ingredients
 
-if search_options == "by ingredients":
+def showByIngredients():
     if "items" not in st.session_state:
         st.session_state.items = []
 
@@ -66,7 +66,6 @@ if search_options == "by ingredients":
             info_col.subheader(info.get("title", "No title"))
             info_col.image(info.get("image", ""), use_container_width=True)
             info_col.markdown("📝 Missing ingredients")
-
             if "missedIngredients" in info:
                 for ing in info["missedIngredients"]:
                     col1, col2 = st.columns([1,4])
@@ -82,9 +81,7 @@ if search_options == "by ingredients":
             else:
                 steps_col.write("No instructions available.")
 
-# The option to search food by the nutrients
-
-elif search_options == "by nutrients":
+def showByNutrients():
     st.subheader("Set your nutrients values to filter:")
 
     min_nutr, max_nutr = st.columns(2)
@@ -121,10 +118,10 @@ elif search_options == "by nutrients":
                 info_col.image(info.get("image", ""), use_container_width=True)
 
                 info_col.markdown("📝 Ingredients")
-                if full_info and "extendedIngredients" in full_info:
+                if "extendedIngredients" in full_info:
                     for ing in full_info["extendedIngredients"]:
                         col1, col2 = info_col.columns([1,4])
-                        if "image" in ing and ing["image"]:
+                        if "image" in ing:
                             col1.image(f"https://spoonacular.com/cdn/ingredients_100x100/{ing['image']}", width=40)
                         col2.write(f"**{ing['original']}**")
                 else:
@@ -145,3 +142,8 @@ elif search_options == "by nutrients":
                         steps_col.markdown(f"{step['number']}. {step['step']}")
                 else:
                     steps_col.write("No instructions available.")
+
+if search_options == "by ingredients":
+    showByIngredients()
+elif search_options == "by nutrients":
+    showByNutrients()

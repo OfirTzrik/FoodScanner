@@ -107,9 +107,9 @@ def showByNutrients():
     #     max_fat = st.number_input("Max Fat (g)", min_value=0, max_value=150, value=50 )
     
     min_cal, max_cal = st.slider("Min to max calories", 0, 5000, (500, 4500), 50)
-    min_protein, max_protein = st.slider("Min to max protiens", 0, 200, (50, 150), 5)
-    min_carbs, max_carbs = st.slider("Min to max carbs", 0, 500, (50, 450), 5)
-    min_fat, max_fat = st.slider("Min to max fats", 0, 500, (50, 450), 5)
+    min_protein, max_protein = st.slider("Min to max protiens (g)", 0, 200, (50, 150), 5)
+    min_carbs, max_carbs = st.slider("Min to max carbs (g)", 0, 500, (50, 450), 5)
+    min_fat, max_fat = st.slider("Min to max fats (g)", 0, 500, (50, 450), 5)
 
     if min_protein >= max_protein or min_carbs >= max_carbs or min_cal >= max_cal or min_fat >= max_fat:
         st.error("Minimum nutrients must be less than maximum nutrients.")

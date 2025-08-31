@@ -91,20 +91,6 @@ def showByNutrients():
     returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
     """
     st.subheader("Set your nutrients values to filter:")
-
-    # DELETE AFTER API USAGE RESETS AND THE REPLACEMENT CODE IS CHECKED
-    # min_nutr, max_nutr = st.columns(2)
-    # with min_nutr:
-    #     min_cal = st.number_input("Min Calories (g)", min_value=0, max_value=5000, value=0)
-    #     min_protein = st.number_input("Min Protein (g)", min_value=0, max_value=200, value=0)
-    #     min_carbs = st.number_input("Min Carbs (g)", min_value=0, max_value=500, value=0)
-    #     min_fat = st.number_input("Min Fat (g)", min_value=0, max_value=500, value=0)
-
-    # with max_nutr:
-    #     max_cal = st.number_input("Max Calories (g)", min_value=0, max_value=5000, value=5000)
-    #     max_protein = st.number_input("Max Protein (g)", min_value=0, max_value=200, value=100)
-    #     max_carbs = st.number_input("Max Carbs (g)", min_value=0, max_value=500, value=100)
-    #     max_fat = st.number_input("Max Fat (g)", min_value=0, max_value=150, value=50 )
     
     min_cal, max_cal = st.slider("Min to max calories", 0, 5000, (500, 4500), 50)
     min_protein, max_protein = st.slider("Min to max protiens (g)", 0, 200, (50, 150), 5)

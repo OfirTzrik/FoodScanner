@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 import request_spoon as rs
+from PIL import Image
+
+icon = Image.open("assets/logo.png")
+st.set_page_config(page_title="Food Scanner", page_icon=icon)
+left, center, right = st.columns([1,1.5,1])
+center.image(icon, width=400)  # pick a width
 
 st.header("Food Scanner", divider=True)
 

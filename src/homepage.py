@@ -4,18 +4,14 @@ import request_spoon as rs
 import os
 from PIL import Image
 
-path = os.path.dirname(os.path.abspath(__file__))
-os.chdir(path)
-os.chdir("..")
-
-icon = Image.open("assets/logo.png")
-st.set_page_config(page_title="Food Scanner", page_icon=icon)
-left, center, right = st.columns([1,1.5,1])
-center.image(icon)
-
-st.header("Food Scanner", divider=True)
-
-search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
+def updatePageConfig():
+    path = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(path)
+    os.chdir("..")
+    icon = Image.open("assets/logo.png")
+    st.set_page_config(page_title="Food Scanner", page_icon=icon)
+    left, center, right = st.columns([1,1.5,1])
+    center.image(icon)
 
 def showByIngredients():
     """
@@ -145,6 +141,10 @@ def showByNutrients():
                         steps_col.markdown(f"{step['number']}. {step['step']}")
                 else:
                     steps_col.write("No instructions available.")
+
+updatePageConfig()
+st.header("Food Scanner", divider=True)
+search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
 
 # Display the fields depending on the search option
 if search_options == "by ingredients":

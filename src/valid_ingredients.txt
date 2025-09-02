@@ -1,67 +1,251 @@
-ingredients = {
-    "Vegetables & Herbs": [
-        "onion", "garlic", "tomato", "potato", "carrot", "bell pepper", "cucumber", "zucchini",
-        "eggplant", "broccoli", "cauliflower", "spinach", "kale", "lettuce", "mushrooms", "celery",
-        "cabbage", "avocado", "corn", "parsley", "cilantro", "basil", "dill", "mint", "rosemary",
-        "thyme", "sage", "chives"
-    ],
-
-    "Fruits": [
-        "apple", "banana", "orange", "lemon", "lime", "grapes", "strawberry", "blueberry", "raspberry",
-        "mango", "pineapple", "peach", "pear", "dates", "dried fruit"
-    ],
-
-    "Grains, Rice & Pasta": [
-        "white rice", "brown rice", "basmati rice", "jasmine rice", "quinoa", "couscous", "bulgur",
-        "barley", "oats", "bread", "pita", "tortillas", "pasta", "spaghetti", "penne", "macaroni",
-        "lasagna sheets", "noodles", "polenta", "cornmeal"
-    ],
-
-    "Legumes": [
-        "red lentils", "green lentils", "brown lentils", "black lentils", "chickpeas", "kidney beans",
-        "black beans", "pinto beans", "green peas", "soybeans", "edamame"
-    ],
-
-    "Proteins": [
-        "eggs", "chicken breast", "chicken thigh", "chicken wings", "whole chicken", "ground beef",
-        "steak", "beef stew meat", "pork chops", "bacon", "ham", "salmon", "tuna", "cod", "tilapia",
-        "shrimp", "tofu", "tempeh", "seitan"
-    ],
-
-    "Dairy & Alternatives": [
-        "milk", "soy milk", "almond milk", "oat milk", "coconut milk", "butter", "yogurt", "greek yogurt",
-        "heavy cream", "sour cream", "coconut cream", "mozzarella", "cheddar", "parmesan", "feta",
-        "cream cheese", "cottage cheese"
-    ],
-
-    "Oils & Fats": [
-        "olive oil", "vegetable oil", "canola oil", "sunflower oil", "corn oil", "peanut oil",
-        "sesame oil", "coconut oil", "ghee", "lard"
-    ],
-
-    "Spices & Seasonings": [
-        "salt", "sea salt", "kosher salt", "black pepper", "paprika", "smoked paprika", "chili powder",
-        "chili flakes", "cumin", "coriander", "turmeric", "curry powder", "oregano", "thyme",
-        "rosemary", "sage", "bay leaves", "ginger", "ground ginger", "nutmeg", "cinnamon", "cloves",
-        "cardamom", "allspice", "mustard seeds", "star anise", "vanilla extract"
-    ],
-
-    "Pantry Staples": [
-        "all-purpose flour", "whole wheat flour", "corn flour", "white sugar", "brown sugar",
-        "powdered sugar", "honey", "maple syrup", "baking powder", "baking soda", "cornstarch",
-        "active dry yeast", "instant yeast", "white vinegar", "apple cider vinegar", "balsamic vinegar",
-        "rice vinegar", "soy sauce", "fish sauce", "worcestershire sauce", "ketchup", "mustard",
-        "mayonnaise", "hot sauce", "peanut butter", "almond butter", "jam", "jelly", "tomato paste",
-        "canned tomatoes"
-    ],
-
-    "Nuts & Seeds": [
-        "almonds", "walnuts", "cashews", "peanuts", "hazelnuts", "pistachios", "sunflower seeds",
-        "pumpkin seeds", "chia seeds", "flaxseeds", "sesame seeds", "tahini"
-    ],
-
-    "Beverages & Extras": [
-        "coffee", "tea", "green tea", "herbal tea", "cocoa powder", "chicken stock", "beef stock",
-        "vegetable stock"
-    ]
-}
+onion
+garlic
+tomato
+potato
+carrot
+bell pepper
+cucumber
+zucchini
+eggplant
+broccoli
+cauliflower
+spinach
+kale
+lettuce
+mushrooms
+celery
+cabbage
+avocado
+corn
+parsley
+cilantro
+basil
+dill
+mint
+rosemary
+thyme
+sage
+chives
+apple
+banana
+orange
+lemon
+lime
+grapes
+strawberry
+blueberry
+raspberry
+mango
+pineapple
+peach
+pear
+dates
+dried fruit
+white rice
+brown rice
+basmati rice
+jasmine rice
+quinoa
+couscous
+bulgur
+barley
+oats
+bread
+pita
+tortillas
+pasta
+spaghetti
+penne
+macaroni
+lasagna sheets
+noodles
+polenta
+cornmeal
+red lentils
+green lentils
+brown lentils
+black lentils
+chickpeas
+kidney beans
+black beans
+pinto beans
+green peas
+soybeans
+edamame
+eggs
+chicken breast
+chicken thigh
+chicken wings
+whole chicken
+ground beef
+steak
+beef stew meat
+pork chops
+bacon
+ham
+salmon
+tuna
+cod
+tilapia
+shrimp
+tofu
+tempeh
+seitan
+milk
+soy milk
+almond milk
+oat milk
+coconut milk
+butter
+yogurt
+greek yogurt
+heavy cream
+sour cream
+coconut cream
+mozzarella
+cheddar
+parmesan
+feta
+cream cheese
+cottage cheese
+olive oil
+vegetable oil
+canola oil
+sunflower oil
+corn oil
+peanut oil
+sesame oil
+coconut oil
+ghee
+lard
+salt
+sea salt
+kosher salt
+black pepper
+paprika
+smoked paprika
+chili powder
+chili flakes
+cumin
+coriander
+turmeric
+curry powder
+oregano
+thyme
+rosemary
+sage
+bay leaves
+ginger
+ground ginger
+nutmeg
+cinnamon
+cloves
+cardamom
+allspice
+mustard seeds
+star anise
+vanilla extract
+all-purpose flour
+whole wheat flour
+corn flour
+white sugar
+brown sugar
+powdered sugar
+honey
+maple syrup
+baking powder
+baking soda
+cornstarch
+active dry yeast
+instant yeast
+white vinegar
+apple cider vinegar
+balsamic vinegar
+rice vinegar
+soy sauce
+fish sauce
+worcestershire sauce
+ketchup
+mustard
+mayonnaise
+hot sauce
+peanut butter
+almond butter
+jam
+jelly
+tomato paste
+canned tomatoes
+almonds
+walnuts
+cashews
+peanuts
+hazelnuts
+pistachios
+sunflower seeds
+pumpkin seeds
+chia seeds
+flaxseeds
+sesame seeds
+tahini
+coffee
+tea
+green tea
+herbal tea
+cocoa powder
+chicken stock
+beef stock
+vegetable stock
+crab
+lobster
+scallops
+clams
+mussels
+squid
+octopus
+lamb
+turkey breast
+duck
+venison
+goat
+gouda
+brie
+camembert
+gorgonzola
+provolone
+croissant
+bagel
+muffin
+doughnut
+naan
+baguette
+popcorn
+pretzels
+crackers
+chips
+granola bar
+sriracha
+pesto
+hummus
+tahini sauce
+bbq sauce
+teriyaki sauce
+frozen pizza
+ice cream
+frozen vegetables
+frozen berries
+cereal
+granola
+pancakes
+waffles
+french toast
+chocolate
+dark chocolate
+candy
+cookies
+cake
+brownies
+kimchi
+miso paste
+nori
+wasabi
+curry paste

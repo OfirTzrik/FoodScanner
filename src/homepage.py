@@ -3,6 +3,10 @@ import pandas as pd
 import request_spoon as rs
 import os
 from PIL import Image
+from style import apply_styles 
+
+apply_styles()  # apply styles before you render anything
+st.title("Fridge Ingredients App")
 
 def updatePageConfig():
     path = os.path.dirname(os.path.abspath(__file__))
@@ -12,6 +16,11 @@ def updatePageConfig():
     st.set_page_config(page_title="Food Scanner", page_icon=icon)
     left, center, right = st.columns([1,1.5,1])
     center.image(icon)
+
+# check if the input is valid
+with open("src/valid_ingredients.txt", 'r') as f:
+    valid_input = [line.strip() for line in f]
+
 
 def showByIngredients():
     """
@@ -25,22 +34,25 @@ def showByIngredients():
     ingredient_name = st.text_input("Enter item name:")
     ingredient_amount = st.number_input("Enter the amount of the ingredient:",min_value=1, step=1, value=1)
     if st.button("Add to list"):
-        if ingredient_name.strip():
-            found = False
-            for item in st.session_state["items"]:
-                if item["name"].lower() == ingredient_name.strip().lower():
-                    item["amount"] += ingredient_amount
-                    found = True
-                    break
-            
-            # Ingredient was not found
-            if not found:
-                st.session_state["items"].append({
-                    "name": ingredient_name.strip().capitalize(),
-                    "amount": ingredient_amount
-                })
-            
-            st.success(f"Added: {ingredient_name}")
+        if ingredient_name in valid_input:
+            if ingredient_name.strip():
+                found = False
+                for item in st.session_state["items"]:
+                    if item["name"].lower() == ingredient_name.strip().lower():
+                        item["amount"] += ingredient_amount
+                        found = True
+                        break
+                
+                # Ingredient was not found
+                if not found:
+                    st.session_state["items"].append({
+                        "name": ingredient_name.strip().capitalize(),
+                        "amount": ingredient_amount
+                    })
+                
+                st.success(f"Added: {ingredient_name}")
+        else:
+            st.error("❌ Input not found. Try again.")    
 
     # Increase / decrease amount of each ingredient
     if st.session_state["items"]:

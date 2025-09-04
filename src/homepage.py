@@ -19,7 +19,7 @@ def updatePageConfig():
 
 # check if the input is valid
 with open("src/valid_ingredients.txt", 'r') as f:
-    valid_input = [line.strip() for line in f]
+    valid_input = [line.strip().lower() for line in f]
 
 
 def showByIngredients():
@@ -31,9 +31,13 @@ def showByIngredients():
         st.session_state.items = [] # Holds the list of ingredients entered
 
     # Enter ingredients and add to list
-    ingredient_name = st.text_input("Enter item name:")
-    ingredient_amount = st.number_input("Enter the amount of the ingredient:",min_value=1, step=1, value=1)
-    if st.button("Add to list"):
+    with st.form("ingredients_form"): 
+        ingredient_name = st.text_input("Enter item name:").strip().lower()
+        ingredient_amount = st.number_input("Enter the amount of the ingredient:",min_value=1, step=1, value=1)
+
+        # subnit button
+        submitted = st.form_submit_button("Add to list")
+    if submitted:
         if ingredient_name in valid_input:
             if ingredient_name.strip():
                 found = False
@@ -42,15 +46,15 @@ def showByIngredients():
                         item["amount"] += ingredient_amount
                         found = True
                         break
-                
+                    
                 # Ingredient was not found
                 if not found:
                     st.session_state["items"].append({
                         "name": ingredient_name.strip().capitalize(),
                         "amount": ingredient_amount
                     })
-                
-                st.success(f"Added: {ingredient_name}")
+                    
+                st.success(f"Added: {ingredient_name.lower()}")
         else:
             st.error("❌ Input not found. Try again.")    
 
@@ -110,11 +114,12 @@ def showByNutrients():
     returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
     """
     st.subheader("Set your nutrients values to filter:")
-    
-    min_cal, max_cal = st.slider("Min to max calories", 0, 5000, (500, 4500), 50)
-    min_protein, max_protein = st.slider("Min to max protiens (g)", 0, 200, (50, 150), 5)
-    min_carbs, max_carbs = st.slider("Min to max carbs (g)", 0, 500, (50, 450), 5)
-    min_fat, max_fat = st.slider("Min to max fats (g)", 0, 500, (50, 450), 5)
+    # the range of nutrients
+
+    min_cal, max_cal = st.slider("Min to max calories", 0, 3500, (300, 600), 50)
+    min_protein, max_protein = st.slider("Min to max protiens (g)", 0, 200, (0, 40), 5)
+    min_carbs, max_carbs = st.slider("Min to max carbs (g)", 0, 400, (0, 50), 5)
+    min_fat, max_fat = st.slider("Min to max fats (g)", 0, 100, (0, 20), 5)
 
     if min_protein >= max_protein or min_carbs >= max_carbs or min_cal >= max_cal or min_fat >= max_fat:
         st.error("Minimum nutrients must be less than maximum nutrients.")

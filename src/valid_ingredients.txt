@@ -1,3 +1,4 @@
+# Vegetables
 onion
 garlic
 tomato
@@ -17,6 +18,8 @@ celery
 cabbage
 avocado
 corn
+
+# Herbs
 parsley
 cilantro
 basil
@@ -26,6 +29,8 @@ rosemary
 thyme
 sage
 chives
+
+# Fruits
 apple
 banana
 orange
@@ -41,6 +46,12 @@ peach
 pear
 dates
 dried fruit
+watermelon
+melon
+kiwi
+pomegranate
+
+# Grains & Carbs
 white rice
 brown rice
 basmati rice
@@ -61,6 +72,8 @@ lasagna sheets
 noodles
 polenta
 cornmeal
+
+# Legumes
 red lentils
 green lentils
 brown lentils
@@ -72,25 +85,9 @@ pinto beans
 green peas
 soybeans
 edamame
+
+# Protein - Eggs & Dairy
 eggs
-chicken breast
-chicken thigh
-chicken wings
-whole chicken
-ground beef
-steak
-beef stew meat
-pork chops
-bacon
-ham
-salmon
-tuna
-cod
-tilapia
-shrimp
-tofu
-tempeh
-seitan
 milk
 soy milk
 almond milk
@@ -108,6 +105,49 @@ parmesan
 feta
 cream cheese
 cottage cheese
+gouda
+brie
+camembert
+gorgonzola
+provolone
+
+# Protein - Meat & Poultry
+chicken breast
+chicken thigh
+chicken wings
+whole chicken
+ground beef
+steak
+beef stew meat
+pork chops
+bacon
+ham
+turkey breast
+duck
+lamb
+venison
+goat
+
+# Protein - Fish & Seafood
+salmon
+tuna
+cod
+tilapia
+shrimp
+crab
+lobster
+scallops
+clams
+mussels
+squid
+octopus
+
+# Protein - Plant-based
+tofu
+tempeh
+seitan
+
+# Oils & Fats
 olive oil
 vegetable oil
 canola oil
@@ -118,6 +158,8 @@ sesame oil
 coconut oil
 ghee
 lard
+
+# Spices & Seasonings
 salt
 sea salt
 kosher salt
@@ -131,9 +173,6 @@ coriander
 turmeric
 curry powder
 oregano
-thyme
-rosemary
-sage
 bay leaves
 ginger
 ground ginger
@@ -145,6 +184,8 @@ allspice
 mustard seeds
 star anise
 vanilla extract
+
+# Baking & Sweeteners
 all-purpose flour
 whole wheat flour
 corn flour
@@ -158,6 +199,8 @@ baking soda
 cornstarch
 active dry yeast
 instant yeast
+
+# Sauces & Condiments
 white vinegar
 apple cider vinegar
 balsamic vinegar
@@ -169,12 +212,17 @@ ketchup
 mustard
 mayonnaise
 hot sauce
-peanut butter
-almond butter
-jam
-jelly
+sriracha
+bbq sauce
+teriyaki sauce
+pesto
+hummus
+tahini
+tahini sauce
 tomato paste
 canned tomatoes
+
+# Nuts & Seeds
 almonds
 walnuts
 cashews
@@ -186,64 +234,56 @@ pumpkin seeds
 chia seeds
 flaxseeds
 sesame seeds
-tahini
+peanut butter
+almond butter
+
+# Drinks
 coffee
 tea
 green tea
 herbal tea
 cocoa powder
+
+# Stocks & Broths
 chicken stock
 beef stock
 vegetable stock
-crab
-lobster
-scallops
-clams
-mussels
-squid
-octopus
-lamb
-turkey breast
-duck
-venison
-goat
-gouda
-brie
-camembert
-gorgonzola
-provolone
+
+# Frozen & Packaged Foods
+frozen pizza
+frozen vegetables
+frozen berries
+cereal
+granola
+granola bar
+chips
+pretzels
+crackers
+popcorn
+
+# Bakery
 croissant
 bagel
 muffin
 doughnut
 naan
 baguette
-popcorn
-pretzels
-crackers
-chips
-granola bar
-sriracha
-pesto
-hummus
-tahini sauce
-bbq sauce
-teriyaki sauce
-frozen pizza
+
+# Desserts & Sweets
 ice cream
-frozen vegetables
-frozen berries
-cereal
-granola
-pancakes
-waffles
-french toast
 chocolate
 dark chocolate
 candy
 cookies
 cake
 brownies
+pancakes
+waffles
+french toast
+jam
+jelly
+
+# International
 kimchi
 miso paste
 nori

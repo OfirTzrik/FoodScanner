@@ -22,6 +22,15 @@ def showByIngredients():
     Search for recipes based on the ingredients entered by the user.
     Returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
     """
+    updateIngredientList()
+    # Request recipes as long as at least one ingredient was entered
+    if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
+        # Currently does not take amount into account
+        items_as_list = [item["name"] for item in st.session_state["items"]]
+        recipes = rs.requestRecipeByIngredients({"type": "main course"}, items_as_list)["results"]; # For now request 2 recipes due to spoonacular API tier limits
+        printRecipes(recipes)
+
+def updateIngredientList():
     if "items" not in st.session_state:
         st.session_state.items = [] # Holds the list of ingredients entered
 
@@ -74,13 +83,6 @@ def showByIngredients():
                 st.session_state["items"].remove(item)
                 st.success(f"Deleted: {item['name']}")
                 st.rerun() # Refresh UI after deletion
-
-    # Request recipes as long as at least one ingredient was entered
-    if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
-        # Currently does not take amount into account
-        items_as_list = [item["name"] for item in st.session_state["items"]]
-        recipes = rs.requestRecipeByIngredients({"type": "main course"}, items_as_list)["results"]; # For now request 2 recipes due to spoonacular API tier limits
-        printRecipes(recipes)
 
 def showByNutrients():
     """

@@ -22,7 +22,7 @@ def makeSpoonacularRequest(request_parameters: dict):
     """
     Make the request to Spoonacular's API with the general parameters and ingredients / nutrients
     """
-    req_params = request_parameters | {"number": 3,"addRecipeInformation": True, "addRecipeInstructions": True, "addRecipeNutrition": True, "apiKey": st.secrets["API_KEY"]}
+    req_params = request_parameters | {"number": 2,"addRecipeInformation": True, "addRecipeInstructions": True, "addRecipeNutrition": True, "apiKey": st.secrets["API_KEY"]}
 
     try:
         recipes = rs.get("https://api.spoonacular.com/recipes/complexSearch", params=req_params, timeout=5).json()

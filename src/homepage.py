@@ -17,7 +17,16 @@ def updatePageConfig():
     left, center, right = st.columns([1,1.5,1])
     center.image(icon)
 
-def showByIngredients():
+def showGeneralOptions():
+    left, mid, right = st.columns(3)
+    cuisine = left.selectbox("Cuisine", ("All", "African", "Asian", "American","British", "Cajun", "Caribbean", "Chinese", "Eastern European", "European", "French",
+                             "German", "Greek", "Indian", "Irish", "Italian", "Japanese", "Jewish", "Korean", "Latin American", "Mediterranean", "Mexican",
+                             "Middle Eastern", "Nordic", "Southern", "Spanish", "Thai", "Vietnamese"))
+    diet = mid.pills("Diet", ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Low FODMAP", "Whole30"], selection_mode="multi")
+    intolerances = right.pills("Intolerances", ["dairy", "egg", "gluten", "grain", "peanut", "seafood", "sesame", "shellfish", "soy", "sulfite", "tree nut", "wheat"], selection_mode="multi")
+    return {"cuisine": cuisine, "diet": ",".join(diet).lower(), "intolerances": ",".join(intolerances)}
+
+def showByIngredients(general_params: dict):
     """
     Search for recipes based on the ingredients entered by the user.
     Returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
@@ -27,7 +36,7 @@ def showByIngredients():
     if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
         # Currently does not take amount into account
         items_as_list = [item["name"] for item in st.session_state["items"]]
-        recipes = rs.requestRecipeByIngredients({"type": "main course"}, items_as_list)["results"]; # For now request 2 recipes due to spoonacular API tier limits
+        recipes = rs.requestRecipeByIngredients(general_params, items_as_list)["results"]; # For now request 2 recipes due to spoonacular API tier limits
         printRecipes(recipes)
 
 def updateIngredientList():
@@ -84,7 +93,7 @@ def updateIngredientList():
                 st.success(f"Deleted: {item['name']}")
                 st.rerun() # Refresh UI after deletion
 
-def showByNutrients():
+def showByNutrients(general_params: dict):
     """
     Search for recipes based on the nutrients values entered by the user.
     returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
@@ -101,7 +110,7 @@ def showByNutrients():
         st.error("Minimum nutrients must be less than maximum nutrients.")
     else:
         if st.button("Get recipe(s)"):
-            recipes = rs.requestRecipeByNutrients({"type": "main course"}, min_carbs=min_carbs, max_carbs=max_carbs, min_protein=min_protein, max_protein=max_protein, min_calories=min_cal, max_calories=max_cal, min_fat=min_fat, max_fat=max_fat)["results"]
+            recipes = rs.requestRecipeByNutrients(general_params, min_carbs=min_carbs, max_carbs=max_carbs, min_protein=min_protein, max_protein=max_protein, min_calories=min_cal, max_calories=max_cal, min_fat=min_fat, max_fat=max_fat)["results"]
             printRecipes(recipes)
 
 def printRecipes(recipes: dict):
@@ -140,6 +149,7 @@ def printRecipes(recipes: dict):
 
 updatePageConfig()
 st.header("Food Scanner", divider=True)
+general_params = showGeneralOptions()
 search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
 
 # Display the fields depending on the search option
@@ -147,6 +157,6 @@ if search_options == "by ingredients":
     # check if the input is valid
     with open("src/valid_ingredients.txt", 'r') as f:
         valid_input = [line.strip().lower() for line in f]
-    showByIngredients()
+    showByIngredients(general_params)
 elif search_options == "by nutrients":
-    showByNutrients()
+    showByNutrients(general_params)

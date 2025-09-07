@@ -5,28 +5,43 @@ import os
 from PIL import Image
 from style import apply_styles 
 
-apply_styles()  # apply styles before you render anything
 st.title("Fridge Ingredients App")
+apply_styles()  # apply styles before you render anything
 
 def updatePageConfig():
     path = os.path.dirname(os.path.abspath(__file__))
     os.chdir(path)
     os.chdir("..")
     icon = Image.open("assets/logo.png")
-    st.set_page_config(page_title="Food Scanner", page_icon=icon)
+    st.set_page_config(page_title="Food Scanner", page_icon=icon, layout="wide")
     left, center, right = st.columns([1,1.5,1])
     center.image(icon)
 
-# check if the input is valid
-with open("src/valid_ingredients.txt", 'r') as f:
-    valid_input = [line.strip().lower() for line in f]
+def showGeneralOptions():
+    left, right = st.columns(2)
+    dish = left.selectbox("Dish type", ("Main Course", "Side Dish", "Dessert", "Appetizer", "Salad", "Bread", "Breakfast", "Soup", "Beverage", "Sauce", "Marinade",
+                                        "Fingerfood", "Snack", "Drink"))
+    cuisine = left.selectbox("Cuisine", ("All", "African", "Asian", "American","British", "Cajun", "Caribbean", "Chinese", "Eastern European", "European", "French",
+                             "German", "Greek", "Indian", "Irish", "Italian", "Japanese", "Jewish", "Korean", "Latin American", "Mediterranean", "Mexican",
+                             "Middle Eastern", "Nordic", "Southern", "Spanish", "Thai", "Vietnamese"))
+    diet = right.pills("Diet", ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Low FODMAP", "Whole30"], selection_mode="multi")
+    intolerances = right.pills("Intolerances", ["dairy", "egg", "gluten", "grain", "peanut", "seafood", "sesame", "shellfish", "soy", "sulfite", "tree nut", "wheat"], selection_mode="multi")
+    return {"type": dish.lower(), "cuisine": cuisine, "diet": ",".join(diet).lower(), "intolerances": ",".join(intolerances)}
 
-
-def showByIngredients():
+def showByIngredients(general_params: dict):
     """
     Search for recipes based on the ingredients entered by the user.
     Returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
     """
+    updateIngredientList()
+    # Request recipes as long as at least one ingredient was entered
+    if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
+        # Currently does not take amount into account
+        items_as_list = [item["name"] for item in st.session_state["items"]]
+        recipes = rs.requestRecipeByIngredients(general_params, items_as_list)["results"]; # For now request 2 recipes due to spoonacular API tier limits
+        printRecipes(recipes)
+
+def updateIngredientList():
     if "items" not in st.session_state:
         st.session_state.items = [] # Holds the list of ingredients entered
 
@@ -80,35 +95,7 @@ def showByIngredients():
                 st.success(f"Deleted: {item['name']}")
                 st.rerun() # Refresh UI after deletion
 
-    # Request recipes as long as at least one ingredient was entered
-    if st.button("Get recipe(s)") and len(st.session_state["items"]) > 1:
-        # Currently does not take amount into account
-        items_as_list = [item["name"] for item in st.session_state["items"]]
-        recipes = rs.requestRecipeByIngredients(items_as_list, 2); # For now request 2 recipes due to spoonacular API tier limits
-        for info, steps in recipes:
-            info_col, steps_col = st.columns(2)
-
-            # left side column
-            info_col.subheader(info.get("title", "No title"))
-            info_col.image(info.get("image", ""), use_container_width=True)
-            info_col.markdown("📝 Missing ingredients")
-            # List the missing ingredients
-            if "missedIngredients" in info:
-                for ing in info["missedIngredients"]:
-                    col1, col2 = st.columns([1,4])
-                    if "image" in ing:
-                        col1.image(ing["image"], width=40)
-                    col2.write(f"**{ing['original']}**")
-            
-            # right side column
-            steps_col.markdown("👩‍🍳 Instructions")
-            if steps and isinstance(steps, list) and len(steps) > 0:
-                for step in steps[0]["steps"]:
-                    steps_col.markdown(f"{step['number']}. {step['step']}")
-            else:
-                steps_col.write("No instructions available.")
-
-def showByNutrients():
+def showByNutrients(general_params: dict):
     """
     Search for recipes based on the nutrients values entered by the user.
     returns 2 recipes (Spoonacular's API (free tier) is limited to 50 points per day).
@@ -125,46 +112,53 @@ def showByNutrients():
         st.error("Minimum nutrients must be less than maximum nutrients.")
     else:
         if st.button("Get recipe(s)"):
-            recipes = rs.requestRecipeByNutrients(min_carbs=min_carbs, max_carbs=max_carbs, min_protein=min_protein, max_protein=max_protein, min_calories=min_cal, max_calories=max_cal, min_fat=min_fat, max_fat=max_fat, number_of_recipes=2)
+            recipes = rs.requestRecipeByNutrients(general_params, min_carbs=min_carbs, max_carbs=max_carbs, min_protein=min_protein, max_protein=max_protein, min_calories=min_cal, max_calories=max_cal, min_fat=min_fat, max_fat=max_fat)["results"]
+            printRecipes(recipes)
 
-            for info, steps in recipes:
-                full_info = rs.requestRecipeInformation(info["id"])
-                info_col, steps_col = st.columns(2)
-                 # Left side (recipe info + nutrients)
-                info_col.subheader(info.get("title", "No title"))
-                info_col.image(info.get("image", ""), use_container_width=True)
+def printRecipes(recipes: dict):
+    for recipe in recipes:
+        # Summary
+        st.title(recipe["title"])
+        st.write("Source: " + recipe["sourceUrl"] + ", " + recipe["creditsText"])
+        st.divider()
+        left_, left, right, right_ = st.columns([1,3,2,1])
+        left.markdown(recipe["summary"], unsafe_allow_html=True)
+        right.image(recipe["image"])
 
-                # List the required ingredients
-                info_col.markdown("📝 Ingredients")
-                if "extendedIngredients" in full_info:
-                    for ing in full_info["extendedIngredients"]:
-                        col1, col2 = info_col.columns([1,4])
-                        if "image" in ing:
-                            col1.image(f"https://spoonacular.com/cdn/ingredients_100x100/{ing['image']}", width=40)
-                        col2.write(f"**{ing['original']}**")
-                else:
-                    info_col.write("No ingredient details available.")
-
-                # Show nutrient facts
-                info_col.markdown("### Nutrition facts")
-                info_col.write(f"Calories: {info.get('calories', 'N/A')}")
-                info_col.write(f"Protein: {info.get('protein', 'N/A')}")
-                info_col.write(f"Fat: {info.get('fat', 'N/A')}")
-                info_col.write(f"Carbs: {info.get('carbs', 'N/A')}")
-
-                steps_col.markdown("👩‍🍳 Instructions")
-                if steps:
-                    for step in steps[0]["steps"]:
-                        steps_col.markdown(f"{step['number']}. {step['step']}")
-                else:
-                    steps_col.write("No instructions available.")
+        info, general, steps = st.columns([1,1,3])
+                
+        # List ingredients
+        ingredients = recipe["nutrition"]["ingredients"]
+        info.subheader("🧺 **Ingredients:**", divider=True)
+        for ingredient in ingredients:
+            info.write(ingredient["name"].capitalize() + ": " + str(ingredient["amount"]) + " " + ingredient["unit"])
+                
+        # Show nutrients and other general information
+        general.subheader("🥣 **General information:**", divider=True)
+        general.write("Vegetarian: " + str(recipe["vegetarian"]))
+        general.write("Vegan: " + str(recipe["vegan"]))
+        general.write("Gluten free: " + str(recipe["glutenFree"]))
+        nutrients = recipe["nutrition"]["nutrients"]
+        new = [x for x in recipe["nutrition"]["nutrients"] if x["name"] in ["Calories", "Fat", "Carbohydrates", "Protein"]] # Take only required nutrients
+        for nutrient in new:
+            general.write(nutrient["name"] + ": " + str(nutrient["amount"]) + " " + nutrient["unit"])
+                
+        # Show recipe instructions
+        steps.subheader("👨‍🍳 **Steps:**", divider=True)
+        instructions = recipe["analyzedInstructions"][0]["steps"]
+        for instruction in instructions:
+            steps.write("Step " + str(instruction["number"]) + " - " + instruction["step"])
 
 updatePageConfig()
 st.header("Food Scanner", divider=True)
+general_params = showGeneralOptions()
 search_options = st.selectbox("Choose search mode:", ["by ingredients", "by nutrients"])
 
 # Display the fields depending on the search option
 if search_options == "by ingredients":
-    showByIngredients()
+    # check if the input is valid
+    with open("src/valid_ingredients.txt", 'r') as f:
+        valid_input = [line.strip().lower() for line in f]
+    showByIngredients(general_params)
 elif search_options == "by nutrients":
-    showByNutrients()
+    showByNutrients(general_params)

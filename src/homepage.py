@@ -18,13 +18,15 @@ def updatePageConfig():
     center.image(icon)
 
 def showGeneralOptions():
-    left, mid, right = st.columns(3)
+    left, right = st.columns(2)
+    dish = left.selectbox("Dish type", ("Main Course", "Side Dish", "Dessert", "Appetizer", "Salad", "Bread", "Breakfast", "Soup", "Beverage", "Sauce", "Marinade",
+                                        "Fingerfood", "Snack", "Drink"))
     cuisine = left.selectbox("Cuisine", ("All", "African", "Asian", "American","British", "Cajun", "Caribbean", "Chinese", "Eastern European", "European", "French",
                              "German", "Greek", "Indian", "Irish", "Italian", "Japanese", "Jewish", "Korean", "Latin American", "Mediterranean", "Mexican",
                              "Middle Eastern", "Nordic", "Southern", "Spanish", "Thai", "Vietnamese"))
-    diet = mid.pills("Diet", ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Low FODMAP", "Whole30"], selection_mode="multi")
+    diet = right.pills("Diet", ["Gluten Free", "Ketogenic", "Vegetarian", "Lacto-Vegetarian", "Ovo-Vegetarian", "Vegan", "Pescetarian", "Paleo", "Primal", "Low FODMAP", "Whole30"], selection_mode="multi")
     intolerances = right.pills("Intolerances", ["dairy", "egg", "gluten", "grain", "peanut", "seafood", "sesame", "shellfish", "soy", "sulfite", "tree nut", "wheat"], selection_mode="multi")
-    return {"cuisine": cuisine, "diet": ",".join(diet).lower(), "intolerances": ",".join(intolerances)}
+    return {"type": dish.lower(), "cuisine": cuisine, "diet": ",".join(diet).lower(), "intolerances": ",".join(intolerances)}
 
 def showByIngredients(general_params: dict):
     """

@@ -129,6 +129,7 @@ venison
 goat
 
 # Protein - Fish & Seafood
+fish
 salmon
 tuna
 cod
